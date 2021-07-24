@@ -6,15 +6,15 @@
 import functools
 
 from flask import (
-    Blueprint, flash, g, redirect, render_tamplate, request, session, url_for
+    Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
 
 from flaskapp.db import get_db
 
 # Create a new blueprint for samples that are analysed
-bp = Blueprint("sample", __name__, url_prefic='/sample')
+bp = Blueprint("sample", __name__, url_prefix='/sample')
 
-@bp.route('/add', methods=('GET', 'POST'))
+@bp.route('/add', methods=["GET", "POST"])
 def add_sample():
     if request.method == 'POST':
         # TODO: this should be removed, we should compute the sha256 on our own
@@ -49,5 +49,9 @@ def add_sample():
 
         flash(error)
 
-    return render_template("sample/sample_add.html")
+    return render_template("sample/add.html")
 
+
+@bp.route('/psych', methods=["GET"])
+def psych():
+    return "Ice"
