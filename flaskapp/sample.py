@@ -28,26 +28,26 @@ def add_sample():
         client_error = None
 
         if not sha256:
-            error = "A sha256 hash is required for the file."
+            client_error = "A sha256 hash is required for the file."
         elif not disk_path:
-            error = "A local path of the file is required."
+            client_error = "A local path of the file is required."
         else:
             # See if we already have the file in our database
             is_in_db = db.execute("SELECT id FROM samples WHERE sha256 = ?",
                 (sha256,)).fetchone()
             if is_in_db:
-                error = f"File {sha256} is already registered."
+                client_error = f"File {sha256} is already registered."
 
 
-        if error is None:
+        if client_error is None:
             db.execute(
-                "INSERT INTO sample (sha256, file_type, disk_path) VALUES \
+                "INSERT INTO samples (sha256, file_type, disk_path) VALUES \
                 (?, ?, ?)", (sha256, "pe", disk_path)
             )
             db.commit()
-            return redirect(url_for("sample.display"))
+            return redirect(url_for("sample.psych"))
 
-        flash(error)
+        flash(client_error)
 
     return render_template("sample/add.html")
 

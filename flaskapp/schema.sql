@@ -6,8 +6,8 @@ CREATE TABLE samples (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     sha256 TEXT UNIQUE NOT NULL,
     file_type TEXT NOT NULL,
-    added_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-    disk_path TEXT NOT NULL,
+    added_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    disk_path TEXT NOT NULL
 );
 
 CREATE TABLE projects (
@@ -15,7 +15,7 @@ CREATE TABLE projects (
     title TEXT NOT NULL,
     creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     db_disk_path TEXT NOT NULL,
-    plugins_folder_path TEXT NOT NULL,
+    plugins_folder_path TEXT NOT NULL
 );
 
 CREATE TABLE project_samples (
