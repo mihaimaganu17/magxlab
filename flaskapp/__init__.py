@@ -33,4 +33,9 @@ def create_app(test_config=None):
     # Initialize the database for this application
     db.init_app(app)
 
+    from . import sample
+
+    # Register the sample blueprint in the main app
+    app.register_blueprint(sample.bp)
+
     return app
