@@ -1,0 +1,23 @@
+DROP TABLE IF EXISTS samples;
+DROP TABLE IF EXISTS projects;
+
+CREATE TABLE samples (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    sha256 TEXT UNIQUE NOT NULL,
+    file_type TEXT NOT NULL,
+    added_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE projects (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE project_sample (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    sample_id INTEGER,
+    project_id INTEGER,
+    FOREIGN KEY(sample_id) REFERENCES samples(id),
+    FOREIGN KEY(project_id) REFERENCES projects(id)
+);
