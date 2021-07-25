@@ -1,12 +1,29 @@
 <!doctype html>
 <title>{% block title %}{% endblock %} - MagXLab</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#hide_button").click(function() {
+                $("p").hide();
+            });
+            $("#show_button").click(function() {
+                $("p").show();
+            });
+        });
+    </script>
+</head>
 <nav>
     <h1>MagXLab</h1>
     <ul>
-        <li><a href="{{ url_for('sample.add_sample') }}"></a>
-        <li><a href="{{ url_for('sample.psych') }}"></a>
+        <li><a href="{{ url_for('sample.add_sample') }}">Add</a>
+        <li><a href="{{ url_for('sample.psych') }}">Fake</a>
     </ul>
+    <p>This is a paragraph.</p>
+    <p>This is another paragraph.</p>
+    <button id="hide_button">Click me to hide paragraphs</button>
+    <button id="show_button">Click me to show paragraphs</button>
 </nav>
 <section class="content">
     <header>
