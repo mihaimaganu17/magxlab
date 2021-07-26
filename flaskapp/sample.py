@@ -20,6 +20,7 @@ def add_sample():
         # TODO: this should be removed, we should compute the sha256 on our own
         sha256 = request.form["sha256"]
         disk_path = request.form["disk_path"]
+        print(sha256, disk_path)
 
         # Fetch the database
         db = get_db()
@@ -54,4 +55,4 @@ def add_sample():
 
 @bp.route('/psych', methods=["GET"])
 def psych():
-    return "Ice"
+    return "<h2>Mice</h2>"

@@ -5,25 +5,115 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
-            $("#hide_button").click(function() {
-                $("p").hide();
-            });
             $("#show_button").click(function() {
-                $("p").show();
+                $("p").toggle();
+            });
+            $("#palert").mouseenter(function() {
+                alert("You entered palert!");
+            });
+            $("#flip").click(function() {
+                $("#panel").slideToggle("slow");
+            });
+            $("#fade_boxes").click(function() {
+                $("#div1").fadeToggle();
+                $("#div2").fadeToggle("slow");
+                $("#div3").fadeToggle(3000);
+            });
+            $("#animate_button").click(function() {
+                var div = $("#div4");
+                div.animate({
+                    left: '250px',
+                    opacity: '0.3',
+                    height: '200px',
+                    width: '150px'
+                });
+                div.animate({fontSize: '3em'}, "slow");
+            });
+            $("#chain_click").click(function() {
+                if (5<6) {
+                    $("#chain_paragraph").css("color",
+                            "red").slideUp(2000).slideDown(2000);
+                }
+            });
+            $("#ajax-button").click(function() {
+                $("#ajax-div").load(
+                    "{{ url_for('static', filename='demo_test.txt') }}");
+            });
+            $("#ajax-get-button").click(function() {
+                $.get("{{ url_for('sample.psych') }}", function(data, status) {
+                    var ag = $("#ajax-get");
+                    if (ag.text() == "Mice") {
+                        ag.html("<h2>Pula<h2>");
+                    } else {
+                        ag.html(data);
+                    };
+                });
+            });
+            $("#ajax-fake-post-button").click(function() {
+                $.post("{{ url_for('sample.add_sample') }}",
+                {
+                    sha256: "fjq983fj3",
+                    disk_path: "daaf",
+                },
+                function(data, status) {
+                    var af = $("#ajax-fake-post");
+                    af.html(data);
+                });
             });
         });
     </script>
 </head>
+<style>
+#panel, #flip {
+  padding: 5px;
+  text-align: center;
+  background-color: #e5eecc;
+  border: solid 1px #c3c3c3;
+}
+
+#panel {
+  padding: 50px;
+  display: none;
+}
+</style>
 <nav>
     <h1>MagXLab</h1>
     <ul>
         <li><a href="{{ url_for('sample.add_sample') }}">Add</a>
         <li><a href="{{ url_for('sample.psych') }}">Fake</a>
     </ul>
+    <div id="ajax-fake-post">Here we will load post server response</div>
+    <button id="ajax-fake-post-button">Click me</button>
+    <div id="ajax-get">We gonna change this</div>
+    <button id="ajax-get-button">Click to request from server</button>
+    <div id="ajax-div"><h2>Let jQuery AJAX Change this text</h2></div>
+    <button id="ajax-button">Get External Content</button>
+    <p id="chain_paragraph">jQuery is fun</p>
+    <button id="chain_click">Chain Click!</button></br>
     <p>This is a paragraph.</p>
     <p>This is another paragraph.</p>
-    <button id="hide_button">Click me to hide paragraphs</button>
-    <button id="show_button">Click me to show paragraphs</button>
+    <p id="palert">This is an alert.</p>
+    <button id="show_button">Click me to toggle paragraphs</button><br>
+
+    <div id="flip">Click to toggle sliding up/down panel</div>
+    <div id="panel">Hello world!</div>
+
+    <button id="fade_boxes">Click to fade in boxes</button><br>
+
+    <div id="div1"
+        style="width:80px;height:80px;display:none;background-color:red;">
+    </div><br>
+    <div id="div2"
+        style="width:80px;height:80px;display:none;background-color:green;">
+    </div><br>
+    <div id="div3"
+        style="width:80px;height:80px;display:none;background-color:blue;">
+    </div><br>
+    <button id="animate_button">Start Animation</button>
+    <div id="div4"
+        style="width:120px;height:120px;background-color:pink;position:absolute;">
+        HELLO
+    </div><br>
 </nav>
 <section class="content">
     <header>
