@@ -56,3 +56,8 @@ def add_sample():
 @bp.route('/psych', methods=["GET"])
 def psych():
     return "<h2>Mice</h2>"
+
+
+@bp.route('/list', methods=["GET"])
+def list_samples():
+    return render_template("sample/list.html")
