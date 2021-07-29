@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <script>
+        $(document).ready(function() {
+            var config = {
+                content: [{
+                    type: 'row',
+                    content: [{
+                        type: 'component',
+                        componentName: 'testComponent',
+                        componentState: { label: 'A' }
+                    },{
+                        type: 'column',
+                        content: [{
+                            type: 'component',
+                            componentName: 'testComponent',
+                            componentState: { label: 'B' }
+                        },{
+                            type: 'component',
+                            componentName: 'testComponent',
+                            componentState: { label: 'C' }
+                        }]
+                    }]
+                }]
+            };
+            // Instantiate Layout
+            var myLayout = new GoldenLayout(config);
+
+            // We need to specify what `testComponent is`
+            myLayout.registerComponent('testComponent', function(container, componentState) {
+                $.get("{{ url_for('sample.add_sample')}}", function(data) {
+                        container.getElement().html(data);
+                });
+            });
+
+            myLayout.init();
+        });
+    </script>
+
+    
+{% endblock %}

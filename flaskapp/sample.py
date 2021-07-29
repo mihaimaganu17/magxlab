@@ -3,13 +3,16 @@
 # Written by Maganu Mihai(m3m0ry)
 
 
+import os
 import functools
 
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for
+    Blueprint, flash, g, redirect, render_template, request, session, url_for,
+    current_app, send_from_directory
 )
 
 from flaskapp.db import get_db
+from werkzeug.utils import secure_filename
 
 # Create a new blueprint for samples that are analysed
 bp = Blueprint("sample", __name__, url_prefix='/sample')
@@ -51,6 +54,35 @@ def add_sample():
         flash(client_error)
 
     return render_template("sample/add.html")
+
+
+@bp.route('/upload', methods=["GET", "POST"])
+def upload_sample():
+    if request.method == 'POST':
+        # Check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file_obj = request.files['file']
+
+        # If the user does noe select a file, the browser submits an empty file
+        # without a filename.
+        if file_obj.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+
+        if file_obj:
+            filename = secure_filename(file_obj.filename)
+            file_obj.save(os.path.join(current_app.config['UPLOAD_FOLDER'],
+                filename))
+            return redirect(url_for('sample.download_file', name=filename))
+
+    return render_template("sample/upload.html")
+
+
+@bp.route("/uploads/<name>", methods=["GET"])
+def download_file(name):
+    return send_from_directory(current_app.config["UPLOAD_FOLDER"], name)
 
 
 @bp.route('/psych', methods=["GET"])

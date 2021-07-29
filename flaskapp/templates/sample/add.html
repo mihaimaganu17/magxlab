@@ -1,15 +1,12 @@
-{% extends 'base.html' %}
-
-{% block header %}
-    <h1>{% block title %}Add sample{% endblock %}</h1>
-{% endblock %}
-
-{% block content %}
-    <form method="post">
-        <label for="sha256">Sha256</label>
-        <input name="sha256" id="sha256" required>
-        <label for="disk_path">Disk Path</label>
-        <input name="disk_path" id="disk_path" required>
-        <input type="submit" value="Submit">
-    </form>
-{% endblock %}
+<style>
+    label {
+        color: white;
+    }
+</style>
+<form method="post">
+    <label for="sha256">Sha256</label>
+    <input name="sha256" id="sha256" required>
+    <label for="disk_path">Disk Path</label>
+    <input name="disk_path" id="disk_path" required>
+    <input type="submit" value="Submit">
+</form>

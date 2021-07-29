@@ -1,70 +1,27 @@
 {% extends 'base.html' %}
 
 {% block head %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='jquery.dsmorse-gridster.min.css') }}"></link>
-    <script src="{{ url_for('static', filename='jquery.dsmorse-gridster.min.js') }}"></script>
     <script>
         $(document).ready(function() {
             $("#some-button").click(function() {
                 $("#some-div").toggle();
             });
-            $(".gridster ul").gridster({
-                widget_margins: [10, 10],
-                widget_base_dimensions: [140, 140],
-                draggable: {
-                    handle: 'header'
-                }
+            $("#add-file").click(function() {
+                $.get("{{ url_for('sample.add_sample')}}", function(data,
+                            status) {
+                    $("#add-file").html(data);
+                });
             });
         });
     </script>
-<style type="text/css">
-    ul {
-          list-style-type: none;
-    }
-    .gs-w {
-        background-color: black;
-    }
-
-    .gridster li header {
-        background: #999;
-        display: block;
-        font-size: 20px;
-        line-height: normal;
-        padding: 4px 0 6px;
-        margin-bottom: 20px;
-        cursor: move;
-    }
-    .gridster li {
-        font-size: 1em;
-        font-weight: bold;
-        text-align: center;
-        line-height: 100%;
-    }
-
-</style>
-{% endblock %}
-
-{% block header %}
-    <h1>{% block title %}List samples{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
-    <div id="some-div">I may disappear</div></li>
-    <button id="some-button">Click me</button>
-
     <div class="gridster">
         <ul>
         <li data-row="1" data-col="1" data-sizex="2" data-sizey="2">
             <header>|||</header>
-            0
-        </li>
-        <li data-row="1" data-col="3" data-sizex="1" data-sizey="2">
-            <header>|||</header>
-            1
-        </li>
-        <li data-row="1" data-col="4" data-sizex="1" data-sizey="1">
-            <header>|||</header>
-            2
+            <button id="add-file">Add</button>
         </li>
         </ul>
     </div>

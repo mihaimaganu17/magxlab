@@ -2,6 +2,9 @@ import os
 
 from flask import Flask
 
+CWD = os.path.dirname(os.path.realpath(__file__))
+UPLOAD_FOLDER = os.path.join(CWD, "storage")
+
 def create_app(test_config=None):
     # Create and configure the app
     app = Flask(__name__, instance_relative_config=True)
@@ -9,6 +12,8 @@ def create_app(test_config=None):
         SECRET_KEY="dev",
         DATABASE = os.path.join(app.instance_path, "magxlab.sqlite"),
     )
+
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
     if test_config is None:
         # Load the instance config, if it exists, when not testing
