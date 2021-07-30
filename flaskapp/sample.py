@@ -85,9 +85,9 @@ def download_file(name):
     return send_from_directory(current_app.config["UPLOAD_FOLDER"], name)
 
 
-@bp.route('/psych', methods=["GET"])
-def psych():
-    return "<h2>Mice</h2>"
+@bp.route("/analyze", methods=["GET"])
+def analyze_sample():
+    return render_template("sample/analyze.html")
 
 
 @bp.route('/list', methods=["GET"])

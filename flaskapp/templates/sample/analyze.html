@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <script>
+        $(document).ready(function() {
+            var config = {
+                settings: {
+                    selectionEnabled: true
+                },
+                content: [{
+                    type: 'row',
+                    content: [{
+                        type: 'component',
+                        componentName: 'example',
+                        componentState: { text: 'Component 1' }
+                    }, {
+                        type: 'component',
+                        componentName: 'example',
+                        componentState: { text: 'Component 2' }
+                    }]
+                }]
+            };
+
+            var myLayout = new window.GoldenLayout(config);
+            myLayout.container = $('#layoutContainer');
+
+            myLayout.registerComponent('example', function(container, componentState) {
+                container.getElement().html('<h2 style="color:white;">' + componentState.text + '</h2>');
+            });
+
+            myLayout._isFullPage = true;
+            myLayout.init();
+
+            // Make sure the layout is fully visible when initially loading
+            // the page
+            myLayout.updateSize($(window).width(),
+                                    $(window).height());
+
+            // Make sure the layout is resizing with the windows accordingly
+            $(window).resize(function () {
+                        myLayout.updateSize($(window).width(),
+                                    $(window).height());
+            });
+
+
+            var addMenuItem = function(text) {
+                var element = $('<li>' + text + '</li>');
+                $('#menuContainer').append(element);
+
+                var newItemConfig = {
+                    type: 'component',
+                    componentName: 'example',
+                    componentState: { text: text }
+                };
+                myLayout.createDragSource(element, newItemConfig);
+
+                element.click(function() {
+                    if (myLayout.selectedItem === null) {
+                        alert('No item selected.');
+                    } else {
+                        myLayout.selectedItem.addChild(newItemConfig);
+                    }
+                });
+            }
+            addMenuItem('User added component A');
+            addMenuItem('User added component B');
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+<div id="wrapper">
+    <ul id="menuContainer"></ul>
+    <div id="layoutContainer"></div>
+</div>
+{% endblock %}
