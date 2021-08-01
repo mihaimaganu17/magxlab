@@ -75,14 +75,17 @@ def upload_sample():
             filename = secure_filename(file_obj.filename)
             file_obj.save(os.path.join(current_app.config['UPLOAD_FOLDER'],
                 filename))
-            return url_for('sample.download_file', name=filename)
+            return url_for('sample.display_file', name=filename)
 
     return render_template("sample/upload.html")
 
 
 @bp.route("/uploads/<name>", methods=["GET"])
-def download_file(name):
-    return "pizza"
+def display_file(name):
+    file_path = os.path.join(current_app.config["UPLOAD_FOLDER"], name)
+    with open(file_path, "rb") as f:
+        contents = f.read()
+        return f"<p style=\"text-align: left; font-size: 14px; overflow-wrap: break-word;\">{contents}<p>"
     return send_from_directory(current_app.config["UPLOAD_FOLDER"], name)
 
 

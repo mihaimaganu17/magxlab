@@ -26,7 +26,8 @@
                 .done(function(data) {
                         $.get(data, function(resp, status) {
                                 console.log(resp);
-                                $("#local-root-container").html("<h2>" + resp + "</h2>");})
+                                $("#local-root-container").html("<h2>" + resp + "</h2>")
+                                .removeClass("row h-100 align-items-center");})
             });
 
         });
