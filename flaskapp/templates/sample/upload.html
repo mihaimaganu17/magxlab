@@ -8,10 +8,13 @@
 </style>
 <script>
     $(document).ready(function() {
-        $("#upload_button").click(function() {
+        $("#file-group").on("click", "#upload_button", function() {
+            console.log("df");
             var fd = new FormData();
-            var files = $('#file')[0].files;
+            var files = $('#file-upload')[0].files;
             fd.append('file', files[0]);
+
+            var file_name = files[0]["name"];
 
             $.ajax({
                 url: "{{ url_for("sample.upload_sample") }}",
@@ -24,17 +27,49 @@
                         $.get(data, function(resp, status) {
                                 console.log(resp);
                                 $("#upload_form").html("<h2>" + resp + "</h2>");})
-                });
+            });
+
+        });
+        $("#file-upload").on("change", function() {
+            var file_name = $('#file-upload')[0].files;
+            file_name = file_name[0]["name"];
+            let new_button = `<input type=\"button\" id=\"upload_button\"
+                class=\"btn btn-success\" value=\"Upload\">`
+            $("#file-label").text(file_name).removeClass("btn btn-primary")
+                .addClass("btn-info");
+            $("#file-group").append(new_button);
         });
     });
 </script>
+<style>
+    #upload_file_box {
+        background-color: grey;
+        padding: 20px 20px 20px 20px
+    }
+    input[type="file"] {
+        display: none;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
-<div class="row h-100 justify-content-center align-items-center">
-    <form method="post" action="" enctype="multipart/form-data" id="upload_form">
-        <input type="file" id="file" name="file" style="color:white;">
-        <input type="button" class="button" value="Upload" id="upload_button">
+<div class="row h-100 align-items-center">
+<div class="col-sm-6 offset-sm-3">
+    <div id="upload_file_box">
+    <h1 style="color:white;">Upload a sample</h1>
+    <form method="post" enctype="multipart/form-data" id="upload_form">
+        <div id="file-group" class="form-group">
+            <label for="file-upload" id="file-label" class="btn btn-primary">
+                Choose File
+            </label>
+            <input
+                type="file"
+                id="file-upload"
+                name="file"
+                style="color:white;">
+        </div>
     </form>
+    </div>
+</div>
 </div>
 {% endblock %}
