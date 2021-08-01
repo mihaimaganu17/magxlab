@@ -27,6 +27,9 @@
             myLayout.registerComponent('example', function(container, componentState) {
                 container.getElement().html('<h2 style="color:white;">' + componentState.text + '</h2>');
             });
+            myLayout.registerComponent('upload_file', function(container, componentState) {
+                container.getElement().html(componentState.data);
+            });
 
             myLayout._isFullPage = true;
             myLayout.init();
@@ -43,34 +46,93 @@
             });
 
 
-            var addMenuItem = function(text) {
-                var element = $('<li>' + text + '</li>');
-                $('#menuContainer').append(element);
+            var addMenuItem = function(menu_title, url) {
+                $.get(url, function(data, status) {
+                    var element = $( '<li>' + menu_title + '</li>' );
+                    $('#menuContainer').append(element);
 
-                var newItemConfig = {
-                    type: 'component',
-                    componentName: 'example',
-                    componentState: { text: text }
-                };
-                myLayout.createDragSource(element, newItemConfig);
+                    var newItemConfig = {
+                        type: 'component',
+                        componentName: 'upload_file',
+                        componentState: { data: data }
+                    };
 
-                element.click(function() {
-                    if (myLayout.selectedItem === null) {
-                        alert('No item selected.');
-                    } else {
-                        myLayout.selectedItem.addChild(newItemConfig);
-                    }
+                    element.click(function() {
+                        if (myLayout.selectedItem === null) {
+                            myLayout.root.contentItems[0].addChild(newItemConfig);
+                        } else {
+                            myLayout.selectedItem.addChild(newItemConfig);
+                        }
+                    });
                 });
-            }
-            addMenuItem('User added component A');
-            addMenuItem('User added component B');
+            };
+            addMenuItem("Upload File", "{{ url_for('sample.upload_sample') }}");
         });
     </script>
+<style>
+h2{
+  font: 14px Arial, sans-serif;
+  color:#fff;
+  padding: 10px;
+  text-align: center;
+}
+
+html, body{
+  height: 100%;
+}
+
+*{
+  margin: 0;
+  padding: 0;
+  list-style-type:none;
+}
+
+#wrapper{
+  height: 100%;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+#menuContainer{
+  width: 20%;
+  height: 100%;
+  position:absolute;
+  top: 0;
+  left: 0;
+  background: #222;
+}
+
+#menuContainer li{
+  border-bottom: 1px solid #000;
+  border-top: 1px solid #333;
+  cursor: pointer;
+  padding: 10px 5px;
+  color: #BBB;
+  background: #1a1a1a;
+  font: 12px Arial, sans-serif;
+}
+
+#menuContainer li:hover{
+  background: #111;
+  color: #CCC;
+}
+
+#layoutContainer{
+  width: 80%;
+  height: 100%;
+  position:absolute;
+  top: 0;
+  left: 20%;
+  box-shadow: -3px 0px 9px 0px rgba( 0, 0, 0, 0.4 );
+}
+    </style>
 {% endblock %}
 
 {% block content %}
 <div id="wrapper">
     <ul id="menuContainer"></ul>
-    <div id="layoutContainer"></div>
+    <div id="layoutContainer">
+    </div>
 </div>
 {% endblock %}

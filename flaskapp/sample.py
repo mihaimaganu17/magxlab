@@ -59,11 +59,14 @@ def add_sample():
 @bp.route('/upload', methods=["GET", "POST"])
 def upload_sample():
     if request.method == 'POST':
+        print("Requesting post")
         # Check if the post request has the file part
+        print(request.files)
         if 'file' not in request.files:
             flash('No file part')
             return redirect(request.url)
         file_obj = request.files['file']
+        print(file_obj)
 
         # If the user does noe select a file, the browser submits an empty file
         # without a filename.
@@ -72,21 +75,25 @@ def upload_sample():
             return redirect(request.url)
 
         if file_obj:
+            print("file_saved")
             filename = secure_filename(file_obj.filename)
             file_obj.save(os.path.join(current_app.config['UPLOAD_FOLDER'],
                 filename))
-            return redirect(url_for('sample.download_file', name=filename))
+            return url_for('sample.download_file', name=filename)
 
     return render_template("sample/upload.html")
 
 
 @bp.route("/uploads/<name>", methods=["GET"])
 def download_file(name):
+    return "pizza"
     return send_from_directory(current_app.config["UPLOAD_FOLDER"], name)
 
 
 @bp.route("/analyze", methods=["GET"])
 def analyze_sample():
+    if request.method == 'POST':
+        print(request.url)
     return render_template("sample/analyze.html")
 
 

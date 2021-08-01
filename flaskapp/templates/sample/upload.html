@@ -1,43 +1,40 @@
-{% extends 'base.html' %}
+{% extends 'headers.html' %}
 
 {% block head %}
-    <script>
-        $(document).ready(function() {
-            var config = {
-                content: [{
-                    type: 'row',
-                    content: [{
-                        type: 'component',
-                        componentName: 'testComponent',
-                        componentState: { label: 'A' }
-                    },{
-                        type: 'column',
-                        content: [{
-                            type: 'component',
-                            componentName: 'testComponent',
-                            componentState: { label: 'B' }
-                        },{
-                            type: 'component',
-                            componentName: 'testComponent',
-                            componentState: { label: 'C' }
-                        }]
-                    }]
-                }]
-            };
-            // Instantiate Layout
-            var myLayout = new GoldenLayout(config);
+<style>
+    label {
+        color: white;
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        $("#upload_button").click(function() {
+            var fd = new FormData();
+            var files = $('#file')[0].files;
+            fd.append('file', files[0]);
 
-            // We need to specify what `testComponent is`
-            myLayout.registerComponent('testComponent', function(container, componentState) {
-                $.get("{{ url_for('sample.add_sample')}}", function(data) {
-                        container.getElement().html(data);
+            $.ajax({
+                url: "{{ url_for("sample.upload_sample") }}",
+                type: "POST",
+                data: fd,
+                contentType: false,
+                processData: false,
+            })
+                .done(function(data) {
+                        $.get(data, function(resp, status) {
+                                console.log(resp);
+                                $("#upload_form").html("<h2>" + resp + "</h2>");})
                 });
-            });
-
-            myLayout.init();
         });
-    </script>
+    });
+</script>
 {% endblock %}
 
 {% block content %}
+<div class="row h-100 justify-content-center align-items-center">
+    <form method="post" action="" enctype="multipart/form-data" id="upload_form">
+        <input type="file" id="file" name="file" style="color:white;">
+        <input type="button" class="button" value="Upload" id="upload_button">
+    </form>
+</div>
 {% endblock %}
