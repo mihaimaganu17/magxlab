@@ -23,7 +23,6 @@ def add_sample():
         # TODO: this should be removed, we should compute the sha256 on our own
         sha256 = request.form["sha256"]
         disk_path = request.form["disk_path"]
-        print(sha256, disk_path)
 
         # Fetch the database
         db = get_db()
@@ -59,14 +58,11 @@ def add_sample():
 @bp.route('/upload', methods=["GET", "POST"])
 def upload_sample():
     if request.method == 'POST':
-        print("Requesting post")
         # Check if the post request has the file part
-        print(request.files)
         if 'file' not in request.files:
             flash('No file part')
             return redirect(request.url)
         file_obj = request.files['file']
-        print(file_obj)
 
         # If the user does noe select a file, the browser submits an empty file
         # without a filename.
