@@ -85,7 +85,8 @@ def display_file(name):
     file_path = os.path.join(current_app.config["UPLOAD_FOLDER"], name)
     with open(file_path, "rb") as f:
         contents = f.read()
-        return f"<p style=\"text-align: left; font-size: 14px; overflow-wrap: break-word;\">{contents}<p>"
+        return f"<p style=\"text-align: left; font-size: 14px; overflow-wrap: \
+                break-word;\">{contents}<p>"
     return send_from_directory(current_app.config["UPLOAD_FOLDER"], name)
 
 
