@@ -54,6 +54,7 @@ def add_sample():
 
     return render_template("sample/add.html")
 
+index = 0
 
 @bp.route('/upload', methods=["GET", "POST"])
 def upload_sample():
@@ -76,8 +77,9 @@ def upload_sample():
             file_obj.save(os.path.join(current_app.config['UPLOAD_FOLDER'],
                 filename))
             return url_for('sample.display_file', name=filename)
-
-    return render_template("sample/upload.html")
+    global index
+    index += 1
+    return render_template("sample/upload.html", index=index)
 
 
 @bp.route("/uploads/<name>", methods=["GET"])
@@ -94,7 +96,8 @@ def display_file(name):
 def analyze_sample():
     if request.method == 'POST':
         print(request.url)
-    return render_template("sample/analyze.html")
+    global index
+    return render_template("sample/analyze.html", index=index)
 
 
 @bp.route('/list', methods=["GET"])

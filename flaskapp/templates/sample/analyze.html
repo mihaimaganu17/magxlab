@@ -23,7 +23,7 @@
             myLayout.registerComponent('example', function(container, componentState) {
                 container.getElement().html('<h2 style="color:white;">' + componentState.text + '</h2>');
             });
-            myLayout.registerComponent('upload_file', function(container, componentState) {
+            myLayout.registerComponent('upload_file' + '{{ index }}', function(container, componentState) {
                 container.getElement().html(componentState.data);
             });
 
@@ -49,7 +49,7 @@
 
                     var newItemConfig = {
                         type: 'component',
-                        componentName: 'upload_file',
+                        componentName: 'upload_file' + '{{ index }}',
                         componentState: { data: data }
                     };
 

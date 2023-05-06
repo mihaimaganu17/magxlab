@@ -7,11 +7,11 @@
     }
 </style>
 <script>
-    $(document).ready(function() {
-        $("#file-group").on("click", "#upload_button", function() {
+    $(document).ready(function(i, e) {
+            $("#file-group").on("click", "#upload_button_" + i, function() {
             console.log("df");
             var fd = new FormData();
-            var files = $('#file-upload')[0].files;
+            var files = $('#file-upload_{{index}}')[0].files;
             fd.append('file', files[0]);
 
             var file_name = files[0]["name"];
@@ -31,14 +31,14 @@
             });
 
         });
-        $("#file-upload").on("change", function() {
-            var file_name = $('#file-upload')[0].files;
+        $("#file-upload_{{index}}").on("change", function() {
+            var file_name = $('#file-upload_{{index}}')[0].files;
             file_name = file_name[0]["name"];
-            let new_button = `<input type=\"button\" id=\"upload_button\"
+                let new_button = `<input type=\"button\"
                 class=\"btn btn-success\" value=\"Upload\">`
             $("#file-label").text(file_name).removeClass("btn btn-primary")
                 .addClass("btn-info");
-            $("#file-group").append(new_button);
+            $("#file-group").append(new_button).attr("id", "upload_button_" + i);
         });
     });
 </script>
@@ -58,14 +58,14 @@
 <div class="col-sm-6 offset-sm-3">
     <div id="upload_file_box">
     <h1 style="color:white;">Upload a sample</h1>
-    <form method="post" enctype="multipart/form-data" id="upload_form">
+    <form method="post" enctype="multipart/form-data" id="upload_form_{{index}}">
         <div id="file-group" class="form-group">
-            <label for="file-upload" id="file-label" class="btn btn-primary">
+            <label for="file-upload_{{index}}" id="file-label" class="btn btn-primary">
                 Choose File
             </label>
             <input
                 type="file"
-                id="file-upload"
+                id="file-upload_{{index}}"
                 name="file"
                 style="color:white;">
         </div>
